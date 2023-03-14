@@ -2699,7 +2699,7 @@ vertical-align: -.125em;
 <p>If the tables in this section take too much space, you may put them in the appendix, and just mention any useful insights you obtained from the data quality check that helped you develop the model or helped you realize the necessary data cleaning / preparation.</p>
 <p>Were there any potentially incorrect values of variables that required cleaning? If yes, how did you clean them?</p>
 <p>Did you do any data wrangling or data preparation before the data was ready to use for model development? Did you create any new predictors from exisiting predictors? For example, if you have number of transactions and spend in a credit card dataset, you may create spend per transaction for predicting if a customer pays their credit card bill. Mention the steps at a broad level, you may put minor details in the appendix. Only mention the steps that ended up being useful towards developing your final model(s).</p>
-<div class="cell" data-execution_count="10">
+<div class="cell" data-execution_count="30">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -2712,7 +2712,7 @@ vertical-align: -.125em;
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div class="cell" data-execution_count="11">
+<div class="cell" data-execution_count="31">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> pd.read_csv(<span class="st">&#39;train.csv&#39;</span>)</span>
@@ -3382,7 +3382,7 @@ EDA
 Developed visualizations to identify appropriate variable transformations and important relationships to be used for variable selection.
 </td>
 <td>
-14
+15
 </td>
 </tr>
 <tr>
@@ -3396,7 +3396,7 @@ Data preparation, influential points treatment, assumptions, interactions, varia
 Also transformed some predictors so they could be used in model development. Identified and remove influential points from the dataset based on the base model. Checked and addressed linearity and non-constant variance assumptions. Checked for multicollinearity. Performed variable selection on an exhaustive set of predictors in order to develop final model. Also checked for overfitting in the final model.
 </td>
 <td>
-61
+65
 </td>
 </tr>
 <tr>
@@ -3493,14 +3493,14 @@ Identified most significant variables in model to develop important conclusions 
 <ol start="3" type="1">
 <li>The final model summary:</li>
 </ol>
-<div class="cell" data-execution_count="17">
+<div class="cell" data-execution_count="32">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>ols_object <span class="op">=</span> smf.ols(formula <span class="op">=</span> <span class="st">&#39;np.sqrt(gross)~year*votes+year*budget+score*votes+year*runtime+score*budget+score*runtime+votes*budget+votes*runtime+month+genre*budget+rating+I(score**2)+I(runtime**2)+I(year**2)&#39;</span>, data <span class="op">=</span> train_filtered)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>model<span class="op">=</span> ols_object.fit()</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>model.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="17">
+<div class="cell-output cell-output-display" data-execution_count="32">
 
 <table class="simpletable">
 <caption>OLS Regression Results</caption>
@@ -3517,7 +3517,7 @@ Identified most significant variables in model to develop important conclusions 
   <th>Date:</th>             <td>Mon, 13 Mar 2023</td> <th>  Prob (F-statistic):</th>  <td>  0.00</td>  
 </tr>
 <tr>
-  <th>Time:</th>                 <td>21:41:35</td>     <th>  Log-Likelihood:    </th> <td> -40673.</td> 
+  <th>Time:</th>                 <td>22:20:59</td>     <th>  Log-Likelihood:    </th> <td> -40673.</td> 
 </tr>
 <tr>
   <th>No. Observations:</th>      <td>  4327</td>      <th>  AIC:               </th> <td>8.141e+04</td>
@@ -3751,15 +3751,15 @@ Identified most significant variables in model to develop important conclusions 
 <ol start="4" type="1">
 <li>Determining the top 10 significant predictors with the largest (absolute value) coefficients. However, the actual coefficients were pulled from the model summary since the following table reflects the absolute value of the coefficients (and will not show any negatives).</li>
 </ol>
-<div class="cell" data-execution_count="18">
+<div class="cell" data-scrolled="true" data-execution_count="33">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>params_sorted <span class="op">=</span> <span class="bu">abs</span>(model.params).sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>params_df <span class="op">=</span> pd.DataFrame(params_sorted, columns<span class="op">=</span>[<span class="st">&#39;coefficient&#39;</span>])</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>params_df <span class="op">=</span> pd.DataFrame(params_sorted, columns<span class="op">=</span>[<span class="st">&#39;absolute_value_of_coefficient&#39;</span>])</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>params_df[<span class="st">&#39;p_value&#39;</span>] <span class="op">=</span> model.pvalues</span>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>params_df.loc[params_df[<span class="st">&#39;p_value&#39;</span>] <span class="op">&lt;=</span> <span class="fl">0.05</span>].head(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="18">
+<div class="cell-output cell-output-display" data-execution_count="33">
 
 <div>
 
@@ -3767,7 +3767,7 @@ Identified most significant variables in model to develop important conclusions 
   <thead>
     <tr>
       <th></th>
-      <th>coefficient</th>
+      <th>absolute_value_of_coefficient</th>
       <th>p_value</th>
     </tr>
   </thead>
